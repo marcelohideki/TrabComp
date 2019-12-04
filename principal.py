@@ -9,13 +9,67 @@ def abrirArquivo():
 
 def cadastros(numero, nome, data, vencimento, tipo, matricula, situacao):
 
-    cadastro = {"Numero":numero, "Nome":nome, "Data":data, "Vencimento":vencimento, "Tipo":tipo, "Matricula":matricula, "Situacao":situacao }
+    cadastro = {"Numero":numero, "Nome":nome, "Data":data, "Vencimento":vencimento, "Tipo":tipo, "Matricula":matricula, "Situacao":situacao}
 
     return cadastro
 
+#def numero():
 
+#def matricula()
 
+#def situacao():
 
+def splitNum():
+
+    arquivo = open('cadastros.txt', 'r')
+    linha = arquivo.readline
+    for cliente in linha:
+        separa = cliente.split(';')
+        numero = separa[0]
+        return numero
+
+def splitNome():
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        nome = separa[1]
+
+def splitData():
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        data = separa[2]
+
+def splitVenc():
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        vencimento = separa[3]
+
+def splitTipo():
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        tipo = separa[4]
+
+def splitMat():
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        matricula = separa[5]
+
+def splitSit():
+
+    arquivo = open('cadastro.txt', 'r')
+    linha = arquivo.readlines
+    for cliente in linha:
+        separa = cliente.split(';')
+        situacao = separa[6]
 
 ############# Funcao menuA ##################
 
@@ -26,9 +80,9 @@ def menuA():
     print('Escolha a opção desejada: ''\n')
     print('1 – Ver lista de Cadastros')
     print('2 – Incluir novo Cadastro')
-    print('3 – Editar Cadastro (senha)')
+    print('3 – Editar Cadastro')
     print('4 – Verificar Situação de Associado')
-    print('5 – Controle Financeiro (senha)''\n')
+    print('5 – Controle Financeiro''\n')
     print('0 – Sair''\n')
     print('_______________________________''\n')
 
@@ -53,7 +107,7 @@ def main():
 #Abre o menu A
     opcaoA = -1
 
-    while ( opcaoA != 0):
+    while (opcaoA != 0):
 	
         menuA()
         opcaoA = int(input())
@@ -69,9 +123,9 @@ def main():
                 opcaoB = int(input())
                 
                 if (opcaoB == 1):
-
                     print('Filtro por Numero:''\n')
-                
+                    splitNum()
+
                 elif (opcaoB == 2):
 
                     print('Filtro por Nome:''\n')
@@ -87,7 +141,7 @@ def main():
                 elif (opcaoB == 5):
 
                     print('Filtro por Tipo:''\n')
-
+                    
                 elif (opcaoB == 6):
 
                     print('Filtro por Nº de Matrícula:''\n')
@@ -103,22 +157,66 @@ def main():
         elif (opcaoA == 2):
 
             print('\n''NOVO CADASTRO:''\n')
+            
+            num = numero()
             nome = input('Nome do cliente: ')
             data = input('Data do cadastro: ')
             
-            venc = int(input('Dia do vencimento da conta: [05, 15 ou 25] '))
-     
-            tipo = input('Titular ou Dependente: [t ou d]')
-            if tipo == 't' or tipo == 'T':
-                tipo = 'Titular'
-            elif tipo == 'd' or tipo == 'D':
-                tipo = 'Dependente'
-            else:
-                print('Opcao invalida')
+            escVenc = False
+            while escVenc != True:
+                venc = input('Dia do vencimento da conta: [05, 15 ou 25] ')
+                if venc == '05' or venc == '5':
+                    venc = '05'
+                    escVenc = True
+                elif venc == '15':
+                    venc = '15'
+                    escVenc = True
+                elif venc == '25':
+                    venc = '25'
+                    escVenc = True
+                else: 
+                    escVenc = False
+                    print('Opcao invalida''\n')        
             
-            cliente = str(cadastros(0, nome, data, venc, tipo, 0, 0))
+            escTipo = False
+            while escTipo != True:
+                tipo = input('Titular ou Dependente: [t ou d]')
+                if tipo == 't' or tipo == 'T':
+                    tipo = 'Titular'
+                    escTipo = True
+                elif tipo == 'd' or tipo == 'D':
+                    tipo = 'Dependente'
+                    escTipo = True
+                else:
+                    escTipo = False
+                    print('Opcao invalida''\n')
+
+            mat = matricula()
+            sit = situacao()
+            
+            cliente = cadastros(num, nome, data, venc, tipo, mat, sit)
+            cadNum = str(cliente['Numero'])
+            cadNome = str(cliente['Nome'])
+            cadDat = str(cliente['Data'])
+            cadVen = str(cliente['Vencimento'])
+            cadTip = str(cliente['Tipo'])
+            cadMat = str(cliente['Matricula'])
+            cadSit = str(cliente['Situacao'])
+
             arquivo = open('cadastros.txt', 'a')
-            arquivo.write(cliente)
+            arquivo.write(cadNum)
+            arquivo.write(';')
+            arquivo.write(cadNome)
+            arquivo.write(';')
+            arquivo.write(cadDat)
+            arquivo.write(';')
+            arquivo.write(cadVen)
+            arquivo.write(';')
+            arquivo.write(cadTip)
+            arquivo.write(';')
+            arquivo.write(cadMat)
+            arquivo.write(';')
+            arquivo.write(cadSit)
             arquivo.write('\n')
             arquivo.close
 
