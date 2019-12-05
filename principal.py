@@ -13,20 +13,23 @@ def cadastros(numero, nome, data, vencimento, tipo, matricula, situacao):
 
     return cadastro
 
+def separar(data):
+    separa = data.split('/')
+    return separa
+
 #def numero():
 
-#def matricula()
+#def matricula():
 
 #def situacao():
 
-def splitNum():
+def splitNum(numero):
 
-    arquivo = open('cadastros.txt', 'r')
-    linha = arquivo.readline
-    for cliente in linha:
-        separa = cliente.split(';')
-        numero = separa[0]
-        return numero
+    with open('cadastros.txt') as file:
+
+        for cliente in file:
+            separa = cliente.split(';')
+            numero = separa[0]    
 
 def splitNome():
     arquivo = open('cadastro.txt', 'r')
@@ -124,7 +127,9 @@ def main():
                 
                 if (opcaoB == 1):
                     print('Filtro por Numero:''\n')
-                    splitNum()
+                    num = int(input('Entre com o numero do cliente: '))
+                    if num == splitNum(num):
+                        print (splitNum(num))
 
                 elif (opcaoB == 2):
 
@@ -158,15 +163,23 @@ def main():
 
             print('\n''NOVO CADASTRO:''\n')
             
-            num = numero()
+            num = input('Numero do cliente: ')            
             nome = input('Nome do cliente: ')
-            data = input('Data do cadastro: ')
             
+            dataCad = input('Data do cadastro: ')
+            
+            dataHoje = input('data de Hoje: ')
+            corteHoje = separar(dataHoje)
+            diaHoje = int(corteHoje[0])
+            mesHoje = int(corteHoje[1])
+            anoHoje = int(corteHoje[2])
+            
+                                   
             escVenc = False
             while escVenc != True:
-                venc = input('Dia do vencimento da conta: [05, 15 ou 25] ')
+                venc = input('Dia do vencimento da conta: [5, 15 ou 25] ')
                 if venc == '05' or venc == '5':
-                    venc = '05'
+                    venc = '5'
                     escVenc = True
                 elif venc == '15':
                     venc = '15'
@@ -177,7 +190,8 @@ def main():
                 else: 
                     escVenc = False
                     print('Opcao invalida''\n')        
-            
+            intVenc = int(venc)
+
             escTipo = False
             while escTipo != True:
                 tipo = input('Titular ou Dependente: [t ou d]')
@@ -191,10 +205,14 @@ def main():
                     escTipo = False
                     print('Opcao invalida''\n')
 
-            mat = matricula()
-            sit = situacao()
+            mat = input('Entre com a matricula: ')
             
-            cliente = cadastros(num, nome, data, venc, tipo, mat, sit)
+            if diaHoje > intVenc:
+                sit = 'Inadimplente'
+            else:
+                sit = 'Ok'
+
+            cliente = cadastros(num, nome, dataCad, venc, tipo, mat, sit)
             cadNum = str(cliente['Numero'])
             cadNome = str(cliente['Nome'])
             cadDat = str(cliente['Data'])
